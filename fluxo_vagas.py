@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS titulos (
     data TEXT,
     hora_entrada TEXT,
     hora_saida TEXT,
+    valor TEXT,
     status TEXT
     );
 """)
@@ -155,10 +156,9 @@ def relatorio_clientes():
         texto_relatorio.insert(tk.END, f"Cliente: {r[0]}, CPF: {r[1]}, Placa: {r[2]}\n")
         
 def relatorio_melhores_clientes():
-    cursor.execute("""
-    SELECT nome, COUNT(*) as total_visitas
+    SELECT nome, cpf, COUNT(*) as total_visitas
     FROM titulos
-    GROUP BY nome
+    GROUP BY nome, cpf
     ORDER BY total_visitas DESC
     LIMIT 5
     """)
@@ -166,7 +166,7 @@ def relatorio_melhores_clientes():
     texto_relatorio.delete("1.0", tk.END)
     texto_relatorio.insert(tk.END, "------------------- 5 MELHORES CLIENTES -------------------  \n")
     for r in registros:
-        texto_relatorio.insert(tk.END, f"Cliente: {r[0]}, Visitas: {r[1]}\n")
+        texto_relatorio.insert(tk.END, f"Cliente: {r[0]}, CPF: {r[1]}, VISITAS: {r[2]}\n")
     
 # ============================================================
 # 4. Construção da janela principal com abas
